@@ -1,0 +1,74 @@
+User Stories:
+A list of requirements along with user stories associate with said requirements
+
+Requirement: Users  with  different  roles  (Buyer,  Seller,  Admin)
+should  be  able  to  login  into  their accounts to be able to perform different actions and logout.
+
+Title: User_Login
+ID: 0001
+Description: As a user, I should be able to log in and log out so that I can use and leave the website. 
+
+Title: Seller_Login
+ID: 0002
+Description: As a seller, I should be able to log in and log out so that I can sell product
+
+Title: Admin_Login
+ID: 0003
+Description: As an admin, I should be able to log in and out to moderate users and product
+
+Requirement: A buyer should be able to search, compare, buy and return different types of products 
+from different sellers. 
+
+Title: Buyer_Search
+ID: 0004
+Description: As a buyer, I should be able to search for items so that I can shop
+
+Title: Buyer_Compare
+ID: 0005
+Description: As a buyer, I should be able to compare one item to another item, to make informed decisions
+
+Title: Buyer_Buy
+ID: 0006
+Description: As a buyer, I should be able to purchase items, so that I can recieve an item I want
+
+Title: Buyer_Return
+ID: 0007
+Description: As a buyer, I should be able to return a purchased item, so that I can get refunded for unwanted product
+
+Requirements: A seller should be able to add, sell and receive payments for their available products.
+
+Title: Seller_List
+ID: 0008
+Description: As a seller, I should be able to list items to sell, so that I can sell product
+
+Title: Seller_Sell
+ID: 0009
+Description: As a seller, I should be able to sell the product I list, so that I can profit
+
+Title: Seller_Recieve_Payments
+ID: 0010
+Description: As a seller, I should be able to receieve the payments for product I sell, in order to profit
+
+Requirements: An  admin  should  be  able  to  approve/block  new  user  accounts  and  products,  and 
+oversee different user actions. 
+
+Title: Admin_Approve_Accounts
+ID: 0011
+Description: As an admin, I should be able to approve the creation of new user accounts, to prevent spam or bots
+
+Title: Admin_Approve_Products
+ID: 0012
+Description: As an admin, I should be able to approve the addition of new product, to prevent bad or spam products
+
+Title: Admin_Reject_Accounts
+ID: 0013
+Description: As an admin, I should be able to reject the creation of new users, to prevent spam or bots
+
+Title: Admin_Reject_Products
+ID: 0014
+Description: As an admin, I should be able to reject the creation of products, to prevent spam or bad products
+
+Title: Admin_Overview
+ID: 0015
+Description: As an admin, I should be able to overview the actions of sellers and users, to prevent spam and bots
+
