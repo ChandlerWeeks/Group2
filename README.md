@@ -5,6 +5,9 @@ Description: An e-commerce platform for users to buy and sell, with moderation f
 
 Objective: Create an e-commerce website / web application with functionalities based on the expectations of the customer (the TA in this case).
 
+Upcoming Due Dates:
+Sprint 1: Friday, Febrary 10, 2023
+
 Functionalities:
 1. Users with different roles  (Buyer, Seller, Admin) should be able to login into their accounts to be able to perform different actions and logout. 
 2. A buyer should be able to search, compare, buy and return different types of products from different sellers. 
