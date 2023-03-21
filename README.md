@@ -11,6 +11,8 @@ Sprint 1: Friday, February 10, 2023
 
 Sprint 2: Friday, March 3, 2023
 
+Sprint 3: Wednesday, April 12, 2023
+
 Functionalities:
 1. Users with different roles  (Buyer, Seller, Admin) should be able to login into their accounts to be able to perform different actions and logout. 
 2. A buyer should be able to search, compare, buy and return different types of products from different sellers. 
