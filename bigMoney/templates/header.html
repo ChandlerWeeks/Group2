@@ -2,11 +2,15 @@
 
 <div>
     <ul class="nav-bar">
-      <li><a href="/">Home</a></li>
-      <li><a>Cart</a></li>
-      <li><a href="./login/">Login</a></li>
-      <li><a>Logout</a></li>
+        <li><a href="/">Home</a></li>
+        <li><a>Cart</a></li>
+        {% if user.is_authenticated %}
+        <li><a>Hello, {{ user.username }}</a></li>
+        <li><a href="{% url 'logout' %}">Logout</a></li>
+        {% else %}
+        <li><a href="{% url 'login' %}">Login</a></li>
+        {% endif %}
     </ul>
-  </div>
+</div>
 
-  {% endblock %}
+{% endblock %}
