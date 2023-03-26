@@ -15,6 +15,15 @@
     </header>
     <main>
         <h1>Login --- *FILLER*</h1>  
+        {% block content %}
+        <h2>Login</h2>
+        <form method="post">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <button type="submit">Login</button>
+        </form>
+        {% endblock %}
+
     </main>
   </body>
 </html>
