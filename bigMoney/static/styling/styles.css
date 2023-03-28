@@ -22,3 +22,38 @@
     background-color: #555;
     color: white;
 }
+
+.heading, .login-header {
+    font-size: 36px;
+    font-weight: bold;
+    text-align: center;
+    margin: 12px 0;
+    text-transform: uppercase;
+}
+  
+  
+.register-form, .login-form {
+    width: 95%;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #555;
+    border-radius: 5px;
+  }
+  
+.form-group {
+    margin-bottom: 15px;
+}
+  
+.btn {
+    background-color: #708067;
+    border: none;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+  
+.btn:hover {
+    background-color: #555;
+}
