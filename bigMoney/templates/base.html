@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Login</title>
+    <title>Home</title>
     <link rel="stylesheet", type="text/css" href={% static 'styling/styles.css'%}>
     <link rel="icon" href="./favicon.ico" type="image/x-icon">
   </head>
@@ -14,15 +14,8 @@
       {% include "header.html" %}
     </header>
     <main>
-        <h1>Login --- *FILLER*</h1>  
-        {% block content %}
-        <h2>Login</h2>
-        <form method="post">
-          {% csrf_token %}
-          {{ form.as_p }}
-          <button type="submit">Login</button>
-        </form>
-        {% endblock %}
+      {% block content %}
+      {% endblock %}
     </main>
   </body>
 </html>
