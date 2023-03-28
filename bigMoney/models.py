@@ -47,7 +47,9 @@ class User(AbstractUser):
         ("S", "Seller"),
         ("C", "Customer")
     )
-    role = models.CharField(max_length=1, blank=False, choices=USER_ROLES, default="C")
+    role = models.CharField(max_length=1, blank=False, choices=USER_ROLES, default="S")
+    def __str__(self):
+        return f'{self.user.username} ({self.role})'
 
 
 class Seller(models.Model):
