@@ -8,14 +8,10 @@ Objective: Create an e-commerce website / web application with functionalities b
 Upcoming Dues Dates:
 
 Sprint 1: Friday, February 10, 2023
-<<<<<<< HEAD
-Sprint 2: Monday, March 20, 2023
-=======
 
-Sprint 2: Friday, March 3, 2023
+Sprint 2: Monday, March 20, 2023
 
 Sprint 3: Wednesday, April 12, 2023
->>>>>>> 4aac92befb74653e21caefd8835f391774dc0741
 
 Functionalities:
 1. Users with different roles  (Buyer, Seller, Admin) should be able to login into their accounts to be able to perform different actions and logout. 
