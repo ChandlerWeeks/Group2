@@ -1,14 +1,10 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h2>Create Account</h2>
-  <form method="post">
+  <h2 class="heading">Create Account</h2>
+  <form class="register-form" method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <label for="id_account_type">Account Type:</label>
-    {{ form.account_type }}
-    <br><br>
-    <button type="submit">Create Account</button>
+    <button type="submit" class="btn">Create Account</button>
   </form>
 {% endblock %}
-
