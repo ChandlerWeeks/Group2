@@ -49,7 +49,10 @@ class User(AbstractUser):
     )
     role = models.CharField(max_length=1, blank=False, choices=USER_ROLES, default="S")
     def __str__(self):
-        return f'{self.user.username} ({self.role})'
+        # return f'{self.user.username} ({self.role})'
+        # this way replaces error
+        # 'User' object has no attribute 'user'
+        return f'{self.username} ({self.role})'
 
 
 class Seller(models.Model):
