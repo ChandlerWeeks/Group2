@@ -13,9 +13,10 @@
 .nav-bar a {
     display: block;
     color: #000;
-    padding: 14px 16px;
+    padding: 12px 12px;
     text-decoration: none;
     text-align: center;
+    font-family: 'Times New Roman', "Georgia", "Arial";
 }
 
 .nav-bar a:hover {
@@ -23,7 +24,8 @@
     color: white;
 }
 
-.heading, .login-header {
+.page-title {
+    font-family: 'Times New Roman', "Georgia", "Arial";
     font-size: 36px;
     font-weight: bold;
     text-align: center;
@@ -31,7 +33,7 @@
     text-transform: uppercase;
 }
   
-.register-form, .login-form {
+.form {
     width: 95%;
     margin: 0 auto;
     padding: 20px;
@@ -51,8 +53,30 @@
     font-size: 16px;
     border-radius: 5px;
     cursor: pointer;
+    margin-top: 10px;
 }
   
 .btn:hover {
     background-color: #555;
 }
+
+.input_descriptor {
+    display: inline-block;
+}
+
+.input-block {
+     /* NOT SURE WHY NEGATIVE MAKES IT LOOK GOOD BUT IT DOES */
+    margin-bottom: -10px;
+}
+
+.input-block input {
+    padding: 2px;
+    width: 80%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+
+  .input-block p {
+    width: 14%;
+  }
