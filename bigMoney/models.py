@@ -6,16 +6,8 @@ from django.utils import timezone
 # Create your models here.
 
 
-class shippingAddress(models.Model):
+class Address(models.Model):
     RecipiantName = models.CharField(max_length=255)
-    StreetAddress = models.CharField(max_length=255)
-    City = models.CharField(max_length=255)
-    State = models.CharField(max_length=20)
-    zipcode = models.IntegerField()
-
-    
-class returnAddress(models.Model):
-    ShipperName = models.CharField(max_length=255)
     StreetAddress = models.CharField(max_length=255)
     City = models.CharField(max_length=255)
     State = models.CharField(max_length=20)
@@ -48,23 +40,25 @@ class User(AbstractUser):
         ("C", "Customer")
     )
     role = models.CharField(max_length=1, blank=False, choices=USER_ROLES, default="S")
-    def __str__(self):
-        return f'{self.user.username} ({self.role})'
+    
+    
+    email = models.EmailField(max_length=255, default="")
+    name = models.CharField(max_length=255, default="New User")
+    balance = models.FloatField(default=0.0)
 
-
-class Seller(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    CompanyName = models.CharField(max_length=255)
-    email = models.EmailField(max_length=255)
-    balance = models.FloatField()
-    address = models.ForeignKey(returnAddress, on_delete=models.CASCADE, default=None)
-    available_merch = models.ForeignKey(merchandise, on_delete=models.CASCADE, default=None)
+    #IMPORT THE FOLLOWING
+    address = models.ForeignKey(Address, on_delete=models.CASCADE, null=True)
     
 
-class Customer(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    email = models.EmailField(max_length=255)
-    address = models.ForeignKey(shippingAddress, on_delete=models.CASCADE, default=None)
-    ShoppingCart = models.ForeignKey(shoppingCart, on_delete=models.CASCADE, default=None)
-    Orders = models.ManyToManyField(Order)
+    # specific to seller, not accessible by customer
+    available_merch = models.ManyToManyField(merchandise, default=None)
+
+    # specific to customer, not accessible by seller
+    ShoppingCart = models.ForeignKey(shoppingCart, on_delete=models.CASCADE, null=True)
+    Orders = models.ManyToManyField(Order, default=None)
+    
+    
+    def __str__(self):
+        return f'{self.username} ({self.role})'
+
 

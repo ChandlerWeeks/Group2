@@ -1,26 +1,26 @@
-"""
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import User
+from bigMoney.models import User, merchandise, Order
 
+admin.site.index_title = "Big Money"
 
-# Cannot be used until models are completed
-
-from bigMoney.models import Seller
-from bigMoney.models import Cusomter
-
-
-# Register your models here.
-class SellerInLine(admin.StackedInline):
-    model = Seller
+class MerchandiseInLine(admin.StackedInline):
+    model = merchandise
     can_delete = True
-    verbose_name_plural = "Seller"
+    verbose_name_plural = "merchandise"
 
-class CustomerInLine(admin.StackedInline):
-    model = Cusomter
-    can_delete = True
-    verbose_name_plural = "Customer"
+@admin.register(User)
+class UserAdmin(admin.ModelAdmin):
+    fields = ['username', 'name', 'email', 'role', 'address', 'balance', 'available_merch',
+              'ShoppingCart', 'Orders'
+              ]
 
-class UserAdmin(BaseUserAdmin):
-    inlines = (SellerInLine,)
-"""
+@admin.register(merchandise)
+class MerchandiseAdmin(admin.ModelAdmin):
+    fields = ['title','cost','description','date_posted',
+    'image', 'quantity_in_stock']
+
+
+@admin.register(Order)
+class OrderAdmin(admin.ModelAdmin):
+    fields = ['name', 'dateOrdered', 'Orders']

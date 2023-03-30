@@ -1,9 +1,10 @@
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-from .forms import RegistrationForm
-from .models import User
+from .forms import *
+from .models import *
 
 # Create your views here.
 def home(request):
@@ -23,6 +24,7 @@ def loginview(request):
         form = AuthenticationForm()
     return render(request, 'login.html', {'form': form})
 
+@login_required
 def logout_view(request):
     logout(request)
     return redirect('home')
@@ -37,3 +39,19 @@ def register_view(request):
     else:
         form = RegistrationForm()
     return render(request, 'register.html', {'form': form})
+
+@login_required
+def change_address(request):
+    address = request.user.address
+    form = AddressForm(instance=address)
+    if request.method == "POST":
+        form = AddressForm(request.POST, instance=address)
+        if form.is_valid():
+            address = form.save(commit=False)
+            address.user = request.user
+            address.save()
+            request.user.address = address
+            request.user.save()
+            return redirect("home")
+
+    return render(request, 'change_address.html', {'form': form})
