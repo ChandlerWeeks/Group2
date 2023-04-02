@@ -13,6 +13,16 @@ class Address(models.Model):
     State = models.CharField(max_length=20)
     zipcode = models.IntegerField()
 
+    #Note: pre allows the function to be interpreted by html
+    def __str__(self):
+        return f"""<pre>Name: {self.RecipiantName}
+Street: {self.StreetAddress}
+City: {self.City}
+State: {self.State}
+Zipcode: {self.zipcode}</pre>
+        """
+    
+
 
 class merchandise(models.Model):
     title = models.CharField(max_length=255)

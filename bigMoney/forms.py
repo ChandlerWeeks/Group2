@@ -16,3 +16,8 @@ class AddressForm(forms.ModelForm):
     class Meta:
         model = Address
         fields = ['RecipiantName', 'StreetAddress', 'City', 'State', 'zipcode']
+
+class accountDetailsForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['name', 'email', 'balance']
