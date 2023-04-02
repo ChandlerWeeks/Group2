@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2 class="page-title">Edit Account Details</h2>
+
+    <form method="post" class=form>
+        {% csrf_token %}
+        <div class="input-block">
+            <label for="name"></label>
+            <p class="input_descriptor">Name</p>
+            <input class="get_input" id="name" type="text" name="name" maxlength='255'required>
+        </div>
+        <div class="input-block">
+            <label for="email"></label>
+            <p class="input_descriptor">Email</p>
+            <input class="get_input" id="email" type="text" name="email" maxlength='255'required>
+        </div>
+        <div class="input-block">
+            <label for="balance"></label>
+            <p class="input_descriptor">Balance</p>
+            <input class="get_input" id="balance", type="number", name="name" maxlength='255'required>
+        </div>
+
+        <div class="button-block">
+            <input type="submit" class="btn" value="Save">
+        </div>
+{% endblock %}

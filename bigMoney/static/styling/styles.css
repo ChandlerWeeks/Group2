@@ -71,12 +71,23 @@
 
 .input-block input {
     padding: 2px;
-    width: 80%;
+    width: 82%;
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 14px;
-  }
+}
 
-  .input-block p {
+.input-block p {
     width: 14%;
-  }
+}
+
+.edit-link {
+    font-size: 10;
+    font-family: 'Times New Roman', "Georgia", "Arial";
+}
+
+.descriptor {
+    font-weight: bold;
+    margin-right: 8px;
+    font-family: 'Times New Roman', "Georgia", "Arial";
+}

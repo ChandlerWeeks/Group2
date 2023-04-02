@@ -55,3 +55,29 @@ def change_address(request):
             return redirect("home")
 
     return render(request, 'change_address.html', {'form': form})
+
+@login_required
+def view_account_details(request):
+    user = request.user
+    context = {
+        'username': user.username,
+        'name': user.name,
+        'email': user.email,
+        'balance': user.balance,
+        'address': user.address, 
+    }
+
+    return render(request, "view_account_details.html", context)
+
+@login_required
+def edit_account(request):
+    user = request.user
+    if request.method == 'POST':
+        form = accountDetailsForm(request.POST)
+        if (form.is_valid()):
+            user = form.save()
+            return redirect('home')
+    else:
+        form = accountDetailsForm()
+
+    return render(request, "edit_account.html", {"form": form})

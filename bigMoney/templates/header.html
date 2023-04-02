@@ -8,7 +8,7 @@
         <li><a>Hello, {{ user.username }}</a></li>
         <li><a href="{% url 'logout' %}">Logout</a></li>
         <!--Might be smart to make a view user page, and have this nested-->
-        <li><a href="{% url 'change-address' %}">change address</a></li>
+        <li><a href="{% url 'view-account' %}">View Account</a></li>
         {% else %}
         <li><a href="{% url 'login' %}">Login</a></li>
         <li><a href="{% url 'register' %}">Register</a></li>
