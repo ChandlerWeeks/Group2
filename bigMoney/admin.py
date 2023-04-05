@@ -11,16 +11,17 @@ class MerchandiseInLine(admin.StackedInline):
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
-    fields = ['username', 'name', 'email', 'role', 'address', 'balance', 'available_merch',
-              'ShoppingCart', 'Orders'
-              ]
+    list_display = ['username', 'name', 'email', 'balance', 'address', 'is_approved']
+    fields = ['is_approved']
 
 @admin.register(merchandise)
 class MerchandiseAdmin(admin.ModelAdmin):
     fields = ['title','cost','description','date_posted',
-    'image', 'quantity_in_stock']
+    'image', 'quantity_in_stock', "is_approved"]
+    ordering = ('-date_posted',)
 
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    fields = ['name', 'dateOrdered', 'Orders']
+    fields = ['date_ordered', 'Order']
+    ordering = ('-date_ordered',)

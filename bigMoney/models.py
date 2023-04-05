@@ -1,7 +1,7 @@
 from django.db import models
-from django.contrib.auth.models import User
 from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
+from django.conf import settings
 
 # Create your models here.
 
@@ -25,6 +25,7 @@ Zipcode: {self.zipcode}</pre>
 
 
 class merchandise(models.Model):
+    poster = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
     title = models.CharField(max_length=255)
     date_posted = models.DateTimeField(default=timezone.now)
     cost = models.FloatField()
@@ -32,17 +33,21 @@ class merchandise(models.Model):
     image = models.ImageField(default='default.jpg', upload_to="merchandise_pics")
     quantity_in_stock = models.IntegerField()
 
+    is_approved = models.BooleanField(default=None, null=True)
+
+    def __str__(self):
+        return f'{self.title} - {self.poster}'
+
 
 class shoppingCart(models.Model):
-    name = models.CharField(max_length=255)
+    poster = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
+
     items = models.ManyToManyField(merchandise)
 
 
 class Order(models.Model):
-    name = models.CharField(max_length=255)
     date_ordered = models.DateTimeField(default=timezone.now)
-    Orders = models.ManyToManyField(shoppingCart)
-
+    Order = models.ForeignKey(shoppingCart, on_delete=models.SET_NULL, null=True)
 
 class User(AbstractUser):
     USER_ROLES = (
@@ -50,7 +55,6 @@ class User(AbstractUser):
         ("C", "Customer")
     )
     role = models.CharField(max_length=1, blank=False, choices=USER_ROLES, default="S")
-    
     
     email = models.EmailField(max_length=255, default="")
     name = models.CharField(max_length=255, default="New User")
@@ -66,7 +70,8 @@ class User(AbstractUser):
     # specific to customer, not accessible by seller
     ShoppingCart = models.ForeignKey(shoppingCart, on_delete=models.CASCADE, null=True)
     Orders = models.ManyToManyField(Order, default=None)
-    
+
+    is_approved = models.BooleanField(default=None, null=True)
     
     def __str__(self):
         return f'{self.username} ({self.role})'
