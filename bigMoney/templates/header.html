@@ -1,11 +1,12 @@
 {% block header %}
+{% load static %}
 
 <div>
     <ul class="nav-bar">
+        <li><img src="{% static '/images/BigMoney.png'%}", alt="view sales picture" width="100" height="100"></li>
         <li><a href="/">Home</a></li>
         <li><a>Cart</a></li>
         {% if user.is_authenticated %}
-        <li><a>Hello, {{ user.username }}</a></li>
         <li><a href="{% url 'logout' %}">Logout</a></li>
         <!--Might be smart to make a view user page, and have this nested-->
         <li><a href="{% url 'view-account' %}">View Account</a></li>

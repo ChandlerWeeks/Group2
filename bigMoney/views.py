@@ -8,7 +8,23 @@ from .models import *
 
 # Create your views here.
 def home(request):
-    return render(request, "home.html")
+    #set what view to show, S, C, or unauthenticated
+    show_seller_boxes = False
+    show_customer_boxes = False
+    show_unauthenticated_boxes = False
+    if not request.user.is_authenticated:
+        show_unauthenticated_boxes = True
+    elif request.user.role == 'S':
+        show_seller_boxes = True
+    elif request.user.role == 'C':
+        show_customer_boxes = True
+
+    context = {
+        'show_unauthenticated_boxes': show_unauthenticated_boxes,
+        'show_seller_boxes': show_seller_boxes,
+        'show_customer_boxes': show_customer_boxes
+    } 
+    return render(request, "home.html", context)
 
 def loginview(request):
     if request.method == 'POST':
