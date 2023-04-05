@@ -31,7 +31,6 @@ class merchandise(models.Model):
     description = models.CharField(max_length=1024)
     image = models.ImageField(default='default.jpg', upload_to="merchandise_pics")
     quantity_in_stock = models.IntegerField()
-    is_approved = models.BooleanField(default=False)
 
 
 class shoppingCart(models.Model):
@@ -67,9 +66,6 @@ class User(AbstractUser):
     # specific to customer, not accessible by seller
     ShoppingCart = models.ForeignKey(shoppingCart, on_delete=models.CASCADE, null=True)
     Orders = models.ManyToManyField(Order, default=None)
-
-    date_added = models.DateTimeField(default=timezone.now)
-    is_approved = models.BooleanField(default=False)
     
     
     def __str__(self):
