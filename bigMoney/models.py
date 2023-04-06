@@ -28,9 +28,9 @@ class merchandise(models.Model):
     poster = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
     title = models.CharField(max_length=255)
     date_posted = models.DateTimeField(default=timezone.now)
-    cost = models.FloatField()
-    description = models.CharField(max_length=1024)
-    image = models.ImageField(default='default.jpg', upload_to="merchandise_pics")
+    cost = models.DecimalField(max_digits=8, decimal_places=2)
+    description = models.TextField(max_length=1024)
+    image = models.ImageField(default='default.jpg', upload_to='product_images')
     quantity_in_stock = models.IntegerField()
 
     is_approved = models.BooleanField(default=None, null=True)
@@ -40,8 +40,7 @@ class merchandise(models.Model):
 
 
 class shoppingCart(models.Model):
-    poster = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
-
+    customer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
     items = models.ManyToManyField(merchandise)
 
 
@@ -75,5 +74,3 @@ class User(AbstractUser):
     
     def __str__(self):
         return f'{self.username} ({self.role})'
-
-
