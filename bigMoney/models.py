@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
 from django.conf import settings
+from django.core.validators import MinLengthValidator
 
 # Create your models here.
 
@@ -32,6 +33,7 @@ class merchandise(models.Model):
     description = models.TextField(max_length=1024)
     image = models.ImageField(default='default.jpg', upload_to='product_images')
     quantity_in_stock = models.IntegerField()
+    quantity_sold = models.IntegerField(default=0)
 
     is_approved = models.BooleanField(default=None, null=True)
 
@@ -54,7 +56,8 @@ class User(AbstractUser):
         ("C", "Customer")
     )
     role = models.CharField(max_length=1, blank=False, choices=USER_ROLES, default="S")
-    
+    card_number = models.CharField(max_length=16, null=True, validators=[MinLengthValidator(16)])
+
     email = models.EmailField(max_length=255, default="")
     name = models.CharField(max_length=255, default="New User")
     balance = models.FloatField(default=0.0)
