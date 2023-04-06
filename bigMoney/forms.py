@@ -20,7 +20,7 @@ class AddressForm(forms.ModelForm):
 class accountDetailsForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['name', 'email', 'balance']
+        fields = ['name', 'email', 'card_number']
 
 class merchandiseForm(forms.ModelForm):
     class Meta:

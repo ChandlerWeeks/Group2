@@ -7,18 +7,18 @@
         {% csrf_token %}
         <div class="input-block">
             <label for="name"></label>
-            <p class="input_descriptor">Name</p>
+            <p class="input_descriptor">Your Name</p>
             <input class="get_input" id="name" type="text" name="name" maxlength='255'required>
         </div>
         <div class="input-block">
             <label for="email"></label>
             <p class="input_descriptor">Email</p>
-            <input class="get_input" id="email" type="text" name="email" maxlength='255'required>
+            <input class="get_input" id="email" type="email" name="email" maxlength='255'required>
         </div>
         <div class="input-block">
-            <label for="balance"></label>
-            <p class="input_descriptor">Balance</p>
-            <input class="get_input" id="balance", type="number", name="name" maxlength='255'required>
+            <label for="card_number"></label>
+            <p class="input_descriptor">Card Number</p>
+            <input class="get_input" id="card_number", type="text", name="card_number" maxlength='16'required>
         </div>
 
         <div class="button-block">
