@@ -224,3 +224,46 @@ div.container {
     background-color: #555;
     color: white;
 }
+
+.merchandise-items {
+    border: 1px solid;
+    width: 100%;
+    margin: 5px;
+    display: flex;
+    align-items: center
+}
+
+.merchandise-items:hover {
+    background-color: #e6e6e6
+}
+
+.merchandise-items img {
+    width: 20%;
+    height: auto;
+    float: left;
+    margin: 10px;
+    max-height: 500px;
+}
+
+.merchandise-items ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    flex-grow: 1;
+}
+
+.merchandise-items li {
+    color: black;
+    text-align: center;
+    text-decoration: none;
+}
+
+.merchandise-items h2 {
+    font-family: 'Times New Roman', "Georgia", "Arial";
+    font-size: 32px;
+    display: block;
+    text-align: center;
+    text-transform: capitalize;
+    margin-top: 0;
+}
+

@@ -88,7 +88,7 @@ def view_account_details(request):
 def edit_account(request):
     user = request.user
     if request.method == 'POST':
-        form = accountDetailsForm(request.POST)
+        form = accountDetailsForm(request.POST, instance=user)
         if (form.is_valid()):
             user = form.save()
             return redirect('home')
@@ -121,3 +121,9 @@ def create_listing(request):
 def view_merchandise(request, item_id):
     item = get_object_or_404(merchandise, pk=item_id)
     return render(request, 'view_item.html', {'item': item})
+
+@login_required
+def view_my_merchandise(request):
+    listings = request.user.available_merch.all()
+    context = {'listings': listings}
+    return render(request, 'view_my_listings.html', context)
