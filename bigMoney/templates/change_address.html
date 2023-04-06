@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2 class="page-title">Change Shipping Address</h2>
+
+    <form method="post" class=form>
+        {% csrf_token %}
+        <div class="input-block">
+            <label for="RecipiantName"></label>
+            <p class="input_descriptor">Name</p>
+            <input class="get_input" id="RecipiantName" type="text" name="RecipiantName" maxlength='255'required>
+        </div>
+
+        <div class="input-block">
+            <label for="StreetAddress"></label>
+            <p class="input_descriptor">Street Address</p>
+            <input class="get_input" id="StreetAddress" type="text" name="StreetAddress" maxlength='255'required>
+        </div>
+
+        <div class="input-block">
+            <label for="City"></label>
+            <p class="input_descriptor">City</p>
+            <input class="get_input" id="City" type="text" name="City" maxlength='255'required>
+        </div>
+
+        <div class="input-block">
+            <label for="State"></label>
+            <p class="input_descriptor">State</p>
+            <input class="get_input" id="State" type="text" name="State" maxlength='255'required>
+        </div>
+
+        <div class="input-block">
+            <label for="zipcode"></label>
+            <p class="input_descriptor">Zip Code</p>
+            <input type="number" id="zipcode" name="zipcode" min="00001" max="99999">
+        </div>
+
+        <div class="button-block">
+            <input type="submit" class="btn" value="Save">
+        </div>
+    </form>
+{% endblock %}

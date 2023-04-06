@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import User
+from .models import User, Address, merchandise
 
 class RegistrationForm(UserCreationForm):
     email = forms.EmailField(required=True)
@@ -11,3 +11,19 @@ class RegistrationForm(UserCreationForm):
     class Meta:
         model = User
         fields = ['username', 'email', 'role']
+
+class AddressForm(forms.ModelForm):
+    class Meta:
+        model = Address
+        fields = ['RecipiantName', 'StreetAddress', 'City', 'State', 'zipcode']
+
+class accountDetailsForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['name', 'email', 'balance']
+
+class merchandiseForm(forms.ModelForm):
+    class Meta:
+        model = merchandise
+        fields = ['title', 'cost', 'description', 'image', 
+                  'quantity_in_stock']
