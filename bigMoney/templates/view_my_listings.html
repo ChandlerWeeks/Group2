@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1 class="page-title">My Listings</h1>
+  {% if listings %}
+      {% for listing in listings %}
+      <a href="{% url 'view-product' item_id=listing.id %}" style="text-decoration: none">
+        <div class="merchandise-items">
+            <img src="{{ listing.image.url }}" alt="{{ listing.name }} image">
+            <ul>
+                <li><h2>{{ listing.title }}</h2></li>
+                <li>Cost: ${{ listing.cost }}</li>
+                <li>Quantity in stock: {{ listing.quantity_in_stock }}</li>
+                <li>Quantity sold: {{ listing.quantity_sold }}</li>
+                <li>Date posted: {{ listing.date_posted }}</li>
+            </ul>
+        </div>
+      </a>
+      {% endfor %}
+  {% else %}
+    <p>You have no listings.</p>
+  {% endif %}
+
+{% endblock %}
