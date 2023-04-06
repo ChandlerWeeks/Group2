@@ -1,8 +1,7 @@
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login, logout
-from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required, user_passes_test
 from .forms import *
 from .models import *
 
@@ -97,3 +96,28 @@ def edit_account(request):
         form = accountDetailsForm()
 
     return render(request, "edit_account.html", {"form": form})
+
+def is_not_customer(user):
+    return user.is_authenticated and user.role != 'C'
+
+def is_not_seller(user):
+    return user.is_authenticated and user.role != 'S'
+
+@user_passes_test(is_not_customer) # makes sure user is not a customer, but a seller
+@login_required
+def create_listing(request):
+    if request.method == 'POST':
+        form = merchandiseForm(request.POST, request.FILES)
+        if form.is_valid():
+            merchandise_item = form.save(commit=False)
+            merchandise_item.poster = request.user
+            merchandise_item.save()
+            request.user.available_merch.add(merchandise_item)
+            return redirect('home')
+    else:
+        form = merchandiseForm()
+    return render(request, 'create_listing.html', {'form': form})
+
+def view_merchandise(request, item_id):
+    item = get_object_or_404(merchandise, pk=item_id)
+    return render(request, 'view_item.html', {'item': item})

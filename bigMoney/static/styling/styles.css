@@ -52,7 +52,8 @@
     margin: 12px 0;
 }
 
-  
+
+
 .form {
     width: 95%;
     margin: 0 auto;
@@ -61,10 +62,11 @@
     border-radius: 5px;
   }
   
-.form-group {
+
+  .form-group {
     margin-bottom: 15px;
 }
-  
+
 .btn {
     background-color: #708067;
     border: none;
@@ -89,7 +91,7 @@
     margin-bottom: -10px;
 }
 
-.input-block input {
+.input-block input, .input-block textarea {
     padding: 2px;
     width: 82%;
     border: 1px solid #ccc;
@@ -152,4 +154,73 @@ div.container {
     display: flex;
     justify-content: space-between;
     width: 100%;
+}
+
+.image-container {
+    float: left;
+    margin: 6px;
+}
+.image-container {
+    width: 33%;
+}
+
+.image-container img {
+    width: 100%;
+    height: auto;
+}
+
+.header-container, .details-container {
+    float: left;
+    margin: 8px;
+    width: 30%;
+}
+
+.header-container h1 {
+    text-align: center;
+    text-transform: capitalize;
+    margin-top: 0;
+}
+
+.header-container p {
+    text-align: center;
+}
+
+.details-container {
+    border: 1px solid;
+    border-color: #777;
+    height: 500px;
+}
+
+.details-container p {
+    text-align: center;
+}
+
+.details-container h1 {
+    text-align: center;
+    margin-top: 0;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.add-to-button {
+    display: block;
+    border: 2px solid;
+    padding: 5px;
+    border-radius: 10px;
+    text-align: center;
+    background-color: #9aaf8e; 
+    color: black;
+    text-decoration: none;
+    overflow: hidden;
+    width: 40%
+}
+
+.add-to-button:hover {
+    background-color: #555;
+    color: white;
 }

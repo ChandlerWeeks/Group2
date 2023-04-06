@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="page-title">Create Product Listing</h2>
+
+<form class="form" method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+
+  <div class="input-block">
+    <label for="title"></label>
+    <p class="input_descriptor">Item Name</p>
+    <input class="get_input" id="title" type="text" name="title" maxlength='255'required>
+  </div>
+
+  <div class="input-block">
+    <label for="cost"></label>
+    <p class="input_descriptor">Item Cost ($)</p>
+    <input class="get_input" id="cost" type="number" name="cost" step='0.01' required>
+  </div>
+
+  <div class="input-block">
+    <label for="description"></label>
+    <div style="position: relative;"></div>
+    <p class="input_descriptor">Item Description</p>
+      <textarea class="get_input" id="description" name="description" rows="4" cols="50" maxlength="1024" required></textarea>
+      <span style="position: absolute; bottom: 5px; right: 5px; font-size: 0.8em; color: gray;">Max 1024 characters</span>
+    </div>
+  </div>
+
+  <div class="input-block">
+    <label for="image"></label>
+    <p class="input_descriptor">Item Picture</p>
+    <input class="get_input" id="image" type="file" accept="image/*" name="image" required>
+  </div>
+
+  <div class="input-block">
+    <label for="quantity_in_stock"></label>
+    <p class="input_descriptor">Quantity Available</p>
+    <input class="get_input" id="quantity_in_stock" type="number" name="quantity_in_stock" maxlength='255'required>
+  </div>
+  
+
+  <button type="submit" class="btn">submit</button>
+</form>
+{% endblock %}
