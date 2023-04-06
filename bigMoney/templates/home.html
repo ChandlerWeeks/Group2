@@ -1,20 +1,74 @@
+{% extends 'base.html' %}
+
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Home</title>
-    <link rel="stylesheet", type="text/css" href={% static 'styling/styles.css'%}>
-    <link rel="icon" href="./favicon.ico" type="image/x-icon">
-  </head>
-  <body>
-    <header>
-      {% include "header.html" %}
-    </header>
-    <main>
-        <h1>Big Money --- *FILLER*</h1>  
-    </main>
-  </body>
-</html>
+
+{% block content %}
+<h2 class="page-title">Big Money</h2>
+{% if user.is_authenticated %}
+<h3 class="subscript">Welcome, {{user.username}}</h3>
+  
+<!-- Display the boxes for the seller to use-->
+{% if show_seller_boxes %}
+  <div class="container">
+    <div class="gallery3"> 
+      <a href="{% url 'create-listing' %}">
+        <img src="{% static '/images/merchandise-icon.png'%}", alt="create product listing picture" width="400" height="400">
+      </a>
+      <div class="desc">Create Product listing</div>
+    </div>
+
+    <div class="gallery3"> 
+      <a href="{% url 'view-my-listings' %}">
+        <img src="{% static '/images/items.png'%}", alt="view product listing picture" width="400" height="400">
+      </a>
+      <div class="desc">view product info</div>
+    </div>
+
+    <div class="gallery3"> 
+      <a href="{% url 'view-my-sales' %}">
+        <img src="{% static '/images/sales-pic.png'%}", alt="view sales picture" width="820" height="200">
+      </a>
+      <div class="desc">View sales info</div>
+    </div>
+  </div>
+  {% endif %}
+
+  {% if show_customer_boxes %}
+  <div class="container"></div>
+    <div class="gallery2"> 
+      <a href="{% url 'view-my-sales' %}">
+        <img src="{% static '/images/sales-pic.png'%}", alt="view sales picture" width="400" height="400">
+      </a>
+      <div class="desc">Sign up</div>
+    </div>
+
+    <div class="gallery2"> 
+      <a href="{% url 'view-my-sales' %}">
+        <img src="{% static '/images/sales-pic.png'%}", alt="view sales picture" width="400" height="400">
+      </a>
+      <div class="desc">Login</div>
+    </div>
+  </div>
+  {% endif %}
+
+  {% else %}
+  {% if show_unauthenticated_boxes %}
+  <div class="container">
+    <div class="gallery2"> 
+      <a href="{% url 'login' %}">
+        <img src="{% static '/images/sales-pic.png'%}", alt="view sales picture" width="400" height="400">
+      </a>
+      <div class="desc">Login</div>
+    </div>
+
+    <div class="gallery2"> 
+      <a href="{% url 'register' %}">
+        <img src="{% static '/images/sales-pic.png'%}", alt="view sales picture" width="400" height="400">
+      </a>
+      <div class="desc">Sign up</div>
+    </div>
+  </div>
+  {% endif %}
+
+{% endif %}
+{%endblock%}

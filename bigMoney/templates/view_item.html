@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="item">
+    <div class="image-container">
+        <img src="{{ item.image.url }}" alt="{{ item.name }} - image not loaded">
+    </div>
+    <div class="text-container">
+        <div class="header-container">
+            <h1>{{ item.title }}</h1>
+            <p>{{ item.description }}</p>
+        </div>
+        <div class="details-container">
+            <h1>Details</h1>
+            <p>Sold by: {{item.poster.username}}</p>
+            <p>Price: ${{ item.cost }}</p>
+            <p>Ammount Available: {{item.quantity_in_stock}}</p>
+            
+            <div class='button-container'>
+                <a class="add-to-button", href=".">Add to cart</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
