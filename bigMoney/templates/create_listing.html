@@ -6,6 +6,13 @@
 <form class="form" method="post" enctype="multipart/form-data">
   {% csrf_token %}
 
+  {% if user.is_approved == NONE %}
+    <div class="alert">Warning: account has not been aproved by administration yet; cannot post</div>
+  {% elif not user.is_approved %}
+    <div class="alert">Warning: account was disapproved by administration; cannot post</div>
+  {%endif%}
+
+
   <div class="input-block">
     <label for="title"></label>
     <p class="input_descriptor">Item Name</p>
@@ -39,7 +46,10 @@
     <input class="get_input" id="quantity_in_stock" type="number" name="quantity_in_stock" maxlength='255'required>
   </div>
   
-
-  <button type="submit" class="btn">submit</button>
+  {% if user.is_approved == NONE or not user.is_approved %}
+    <p>Unable to sumbit: see warning message</p>
+  {%else%}
+    <button type="submit" class="btn">Submit</button>
+  {%endif%}
 </form>
 {% endblock %}
