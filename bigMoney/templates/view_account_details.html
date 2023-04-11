@@ -7,6 +7,7 @@
         <p><strong class="descriptor">Username:</strong> {{ username }}</p>
         <p><strong class="descriptor">Name:</strong> {{ name }}</p>
         <p><strong class="descriptor">Email:</strong> {{ email }}</p>
+        <p><strong class="descriptor">Card Number:</strong> **** **** **** {{ card_number|slice:":15"|slice:"11:" }}</p>
         <p><strong class="descriptor">Balance:</strong> ${{balance}}</p>
         <p class="edit-link"><a href="{% url 'edit-account' %}">Edit Account details</a></p>
         <p><strong class="descriptor">Address:</strong> {{address|safe}}</p>

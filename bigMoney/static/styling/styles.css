@@ -267,3 +267,20 @@ div.container {
     margin-top: 0;
 }
 
+.alert {
+    padding: 1rem;
+    border: 2px solid red;
+    color: red;
+    font-weight: bold;
+    text-align: center;
+    margin: 5px;
+  }
+
+  .redeem-button {
+    background-color: rgb(99, 122, 96);
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0.25rem;
+    text-decoration: none;
+  }

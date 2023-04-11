@@ -12,7 +12,7 @@ class MerchandiseInLine(admin.StackedInline):
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
     list_display = ['username', 'is_approved', 'name', 'email', 'balance', 'address']
-    fields = ['is_approved']
+    fields = ['is_approved', 'balance']
 
 @admin.register(merchandise)
 class MerchandiseAdmin(admin.ModelAdmin):

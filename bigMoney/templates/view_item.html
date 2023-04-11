@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% if item.is_approved == NONE %}
+<div class="alert">Warning: product has not been aproved by administration yet; cannot buy</div>
+{% elif not item.is_approved %}
+<div class="alert">Warning: product was disapproved by administration; cannot buy</div>
+{%endif%}
 <div class="item">
     <div class="image-container">
         <img src="{{ item.image.url }}" alt="{{ item.name }} - image not loaded">
@@ -17,7 +22,11 @@
             <p>Ammount Available: {{item.quantity_in_stock}}</p>
             
             <div class='button-container'>
+                {% if item.is_approved == NONE or not item.is_approved %}
+                    <p>Unable to purchase: see warning message</p>
+                {%else%}
                 <a class="add-to-button", href=".">Add to cart</a>
+                {%endif%}
             </div>
         </div>
     </div>
