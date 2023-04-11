@@ -1,7 +1,8 @@
 from django.test import Client, TestCase
 from django.urls import reverse
-from .models import User
+from .models import User, Order, merchandise
 from .forms import *
+from .views import *
 
 # Create your tests here.
 
@@ -83,5 +84,128 @@ class LoginTestCase(TestCase):
         # Check that the user is logged out
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, reverse('home'), status_code=302)
+        
+class AdminLoginTest(TestCase):
+    def setUp(self):
+        # create admin
+        self.admin = User.objects.create_superuser(
+        username='admin', email='admin@example.com', password='something')
+
+    def test_admin_login(self):
+        # go to admin login view
+        url = reverse('admin:login')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+
+        # login as admin
+        response = self.client.post(
+            url,
+            {
+                'username': 'admin',
+                'password': 'something'
+            }
+        )
+        self.assertEqual(response.status_code, 302)
+        response = self.client.get(url)
+        self.assertRedirects(response, reverse('admin:index'), status_code=302)
+
+class AdminApproveUser(TestCase):
+    def setUp(self):
+        # create admin
+        self.admin = User.objects.create_superuser(
+            username='admin', email='admin@example.com', password='something')
+        # create user
+        self.user = User.objects.create_user(
+            username='testuser', email='testuser@example.com', password='testpass')
+        self.user.is_approved = None
+        self.user.save()
+    
+    def test_admin_approve_user(self):
+        # login as admin
+        self.client.force_login(self.admin)
+        
+        # check user is not approved
+        self.assertFalse(User.objects.get(id=self.user.id).is_approved)
+
+        # set is_approved to true
+        self.user.is_approved = True
+        self.user.save()
+
+        self.assertTrue(User.objects.get(id=self.user.id).is_approved)
+        # another way of checking
+        #self.user.refresh_from_db()
+        #self.assertTrue(self.user.is_approved)
+
+class AdminDisapproveUser(TestCase):
+    def setUp(self):
+        self.admin = User.objects.create_superuser(
+            username='admin', email='admin@example.com', password='something')
+        self.user = User.objects.create_user(
+            username='testuser', email='testuser@example.com', password='testpass',
+            is_approved = True)
+
+    def test_admin_disapprove_user(self):
+        # login as admin
+        self.client.force_login(self.admin)
+        
+        # check user is approved
+        self.assertTrue(User.objects.get(id=self.user.id).is_approved)
+
+        # set is_approved to true
+        self.user.is_approved = False
+        self.user.save()
+
+        self.assertFalse(User.objects.get(id=self.user.id).is_approved)
+
+class AdminApproveMerch(TestCase):
+    def setUp(self):
+        # create admin
+        self.admin = User.objects.create_superuser(
+            username='admin', email='admin@example.com', password='something')
+        # create merchandise
+        self.merch = merchandise.objects.create(
+            title = 'TestMerch',
+            cost = 10.00,
+            description = 'Some description',
+            quantity_in_stock = 3,
+            quantity_sold = 1,
+            is_approved = None,
+        )
+    
+    def test_approve_merch(self):
+        # login as admin
+        self.client.force_login(self.admin)
+
+        # check merch exists
+        self.assertTrue(merchandise.objects.get(id=self.merch.id).title == 'TestMerch')
+
+        # check merch is not approved
+        self.assertFalse(merchandise.objects.get(id=self.merch.id).is_approved)
+        
+        # set merch.is_approved to True and save
+        self.merch.is_approved = True
+        self.merch.save()
+
+        # Check if the update was successful
+        self.merch.refresh_from_db()
+        self.assertEqual(self.merch.is_approved, True)
+
+class AdminViewOrderHistory(TestCase):
+    def setUp(self):
+        # create admin
+        self.admin = User.objects.create_superuser(
+        username='admin', email='admin@example.com', password='something')
+
+    def test_view_order_history(self):
+        # login as admin
+        self.client.force_login(self.admin)
+
+        #look at order history
+        url = reverse('admin:bigMoney_order_changelist')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+
+        
+
 
 
