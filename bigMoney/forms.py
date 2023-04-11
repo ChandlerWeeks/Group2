@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import User, Address, merchandise
+from .models import User, Address, merchandise, CartItem
 
 class RegistrationForm(UserCreationForm):
     email = forms.EmailField(required=True)
@@ -27,3 +27,8 @@ class merchandiseForm(forms.ModelForm):
         model = merchandise
         fields = ['title', 'cost', 'description', 'image', 
                   'quantity_in_stock']
+        
+class CartItemForm(forms.ModelForm):
+    class Meta:
+        model = CartItem
+        fields = ['quantity']

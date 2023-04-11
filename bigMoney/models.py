@@ -6,7 +6,6 @@ from django.core.validators import MinLengthValidator
 
 # Create your models here.
 
-
 class Address(models.Model):
     RecipiantName = models.CharField(max_length=255)
     StreetAddress = models.CharField(max_length=255)
@@ -41,10 +40,14 @@ class merchandise(models.Model):
         return f'{self.title} - {self.poster}'
 
 
+class CartItem(models.Model):
+    item = models.ForeignKey(merchandise, on_delete=models.CASCADE)
+    customer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
+    quantity = models.IntegerField(default=0)
+
 class shoppingCart(models.Model):
     customer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
-    items = models.ManyToManyField(merchandise)
-
+    items = models.ManyToManyField(CartItem)
 
 class Order(models.Model):
     date_ordered = models.DateTimeField(default=timezone.now)

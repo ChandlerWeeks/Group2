@@ -123,6 +123,9 @@ def create_listing(request):
 
 def view_merchandise(request, item_id):
     item = get_object_or_404(merchandise, pk=item_id)
+
+    messages.get_messages(request) # retrieve any messages
+
     return render(request, 'view_item.html', {'item': item})
 
 @login_required
@@ -147,3 +150,20 @@ def redeem_funds(request):
     user.save()
     message = "Funds Recieved Successfully"
     return redirect(reverse('view-my-sales') + '?message=' + message)
+
+@login_required
+def add_to_cart(request, item_id):
+    item = get_object_or_404(merchandise, pk=item_id)
+    cart = shoppingCart.objects.get_or_create(customer=request.user)
+
+    cart_item, created = CartItem.objects.get_or_create(item=item, customer=request.user)
+
+    if not created:
+        cart_item.quantity += 1
+        cart_item.save()
+    else:
+        cart_item.quantity = 1
+        cart.items.add(cart_item)
+    
+    messages.success(request, f"a {item.title} has been added to your cart!")
+    return redirect('view-product', item_id=item_id)

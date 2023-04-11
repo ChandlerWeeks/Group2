@@ -59,16 +59,29 @@ class LoginTestCase(TestCase):
         self.client = Client()
         self.user = User.objects.create_user(
             username='testuser', email='testuser@example.com', password='testpassword')
-
+    #succesful login test
     def test_login_success(self):
         url = reverse('login')
         data = {'username': 'testuser', 'password': 'testpassword'}
         response = self.client.post(url, data)
         self.assertRedirects(response, reverse('home'), status_code=302)
-
+    #unsuccessful login test
     def test_login_failure(self):
         url = reverse('login')
         data = {'username': 'testuser', 'password': 'wrongpassword'}
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Please enter a correct username and password.')
+
+    def test_logout_success(self):
+        # Login first
+        self.client.login(username='testuser', password='testpassword')
+
+        # Logout
+        response = self.client.get(reverse('logout'))
+
+        # Check that the user is logged out
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, reverse('home'), status_code=302)
+
+
