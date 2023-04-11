@@ -15,7 +15,8 @@ urlpatterns = [
  path('view-my-listings/', views.view_my_merchandise, name="view-my-listings"),
  path('view-my-sales/', views.view_my_sales, name='view-my-sales'),
  path('view-product/<int:item_id>/', views.view_merchandise, name="view-product"),
- path('redeem-funds/', views.redeem_funds, name="redeem_funds")
+ path('redeem-funds/', views.redeem_funds, name="redeem_funds"),
+ path('add_to_cart/<int:item_id>/', views.add_to_cart, name="add_to_cart"),
 ]
 
 # allows for images to be uploaded
