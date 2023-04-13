@@ -2,12 +2,9 @@ from django.test import Client, TestCase
 from django.urls import reverse
 from .models import User, Order, merchandise
 from .forms import *
-<<<<<<< HEAD
 from django.core.files.uploadedfile import SimpleUploadedFile
 from .models import merchandise
-=======
 from .views import *
->>>>>>> 9dffbbc105e6fc5595b747406dfe35d6daf7cca6
 
 # Create your tests here.
 
