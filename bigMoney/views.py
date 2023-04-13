@@ -2,6 +2,8 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib import messages
+from django.urls import reverse
 from .forms import *
 from .models import *
 
@@ -80,6 +82,7 @@ def view_account_details(request):
         'email': user.email,
         'balance': user.balance,
         'address': user.address, 
+        'card_number': user.card_number
     }
 
     return render(request, "view_account_details.html", context)
@@ -120,6 +123,9 @@ def create_listing(request):
 
 def view_merchandise(request, item_id):
     item = get_object_or_404(merchandise, pk=item_id)
+
+    messages.get_messages(request) # retrieve any messages
+
     return render(request, 'view_item.html', {'item': item})
 
 @login_required
@@ -127,3 +133,37 @@ def view_my_merchandise(request):
     listings = request.user.available_merch.all()
     context = {'listings': listings}
     return render(request, 'view_my_listings.html', context)
+
+@login_required
+def view_my_sales(request):
+    message = request.GET.get('message')
+    user = request.user
+    context = {'user': user}
+    if message:
+        context['message'] = message
+    return render(request, "view_my_sales.html", context)
+
+@login_required
+def redeem_funds(request):
+    user = request.user
+    user.balance = 0.0
+    user.save()
+    message = "Funds Recieved Successfully"
+    return redirect(reverse('view-my-sales') + '?message=' + message)
+
+@login_required
+def add_to_cart(request, item_id):
+    item = get_object_or_404(merchandise, pk=item_id)
+    cart = shoppingCart.objects.get_or_create(customer=request.user)
+
+    cart_item, created = CartItem.objects.get_or_create(item=item, customer=request.user)
+
+    if not created:
+        cart_item.quantity += 1
+        cart_item.save()
+    else:
+        cart_item.quantity = 1
+        cart.items.add(cart_item)
+    
+    messages.success(request, f"a {item.title} has been added to your cart!")
+    return redirect('view-product', item_id=item_id)

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{%block content%}
+    <h2 class="page-title">Sales info for user: {{user.username}}</h2>
+    {% if message %}
+        <div class="alert">{{ message }}</div>
+    {% endif %}
+    <p>Your balance: {{user.balance}}</p>
+    {%if user.card_number != NONE%}
+        <p>Your Card Info: **** **** **** {{ user.card_number|slice:":15"|slice:"11:" }}</p>
+        <div class='redeem-button-container'>
+            <a class="redeem-button", href={% url 'redeem_funds' %}>Redeem Funds</a>
+        </div>
+    {%else%}
+        <p>No Card exists to redeem payment for sales</p>
+    {%endif%}
+{%endblock%}
