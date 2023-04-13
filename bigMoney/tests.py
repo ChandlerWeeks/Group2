@@ -214,7 +214,6 @@ class CreateListingTest(TestCase):
         # Create a merchandise item associated with the test user
         self.item = merchandise.objects.create(title='Test', description='This is a test item', cost=9.99, quantity_in_stock=10, poster=self.user, is_approved=True)
 
-
     def test_create_listing_view(self):
         self.client.login(username='testuser', password='testpassword')
         image = SimpleUploadedFile("test_image.jpg", b"file_content", content_type="image/jpeg") # Create a test image file for the form
@@ -248,8 +247,6 @@ class CreateListingTest(TestCase):
         self.assertIn(self.item, my_merchandise)
         # Assert that the response uses the 'view_my_listings.html' template
         self.assertTemplateUsed(response, 'view_my_listings.html')
-
-
     def test_view_my_merchandise_with_unauthenticated_user(self):
         # Log out the test user
         self.client.logout()
@@ -258,4 +255,30 @@ class CreateListingTest(TestCase):
         # Send GET request to the view_my_merchandise function
         response = self.client.get(url)
         # Assert that the response has a status code of 302 (Redirect)
+        self.assertEqual(response.status_code, 302)
+    
+    def test_view_my_sales_authenticated_user(self):
+        # Log in the test user
+        self.client.login(username='testuser', password='testpassword')
+
+        # Send a GET request to view_my_sales with a query string parameter
+        response = self.client.get(reverse('view-my-sales'), {'message': 'Test message'})
+
+        # Assert that the response has a 200 status code
+        self.assertEqual(response.status_code, 200)
+
+        # Assert that the rendered HTML contains the username of the logged-in user
+        self.assertContains(response, 'testuser')
+
+        # Assert that the rendered HTML contains the message parameter value
+        self.assertContains(response, 'Test message')
+
+    def test_view_my_sales_unauthenticated_user(self):
+        # Log out the test user
+        self.client.logout()
+
+        # Send a GET request to view_my_sales with a query string parameter
+        response = self.client.get(reverse('view-my-sales'), {'message': 'Test message'})
+
+        # Assert that the response has a 302 status code, indicating a redirect to the login page
         self.assertEqual(response.status_code, 302)
