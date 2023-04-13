@@ -2,6 +2,8 @@ from django.test import Client, TestCase
 from django.urls import reverse
 from .models import User, Order, merchandise
 from .forms import *
+from django.core.files.uploadedfile import SimpleUploadedFile
+from .models import merchandise
 from .views import *
 
 # Create your tests here.
@@ -9,7 +11,7 @@ from .views import *
 class RegisterPageTest(TestCase):
     def setUp(self):
             # Set up any necessary data for the test
-            self.url = reverse('register')  # Replace 'register' with the URL name of your register view
+            self.url = reverse('register')
 
     def test_register_page_status_code(self):
             # Test that the register page returns a 200 status code
@@ -53,7 +55,6 @@ class RegisterPageTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertFalse(User.objects.filter(username='yee').exists())
 
-
 #login tests
 class LoginTestCase(TestCase):
     def setUp(self):
@@ -73,7 +74,7 @@ class LoginTestCase(TestCase):
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Please enter a correct username and password.')
-
+    
     def test_logout_success(self):
         # Login first
         self.client.login(username='testuser', password='testpassword')
@@ -205,7 +206,56 @@ class AdminViewOrderHistory(TestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
-        
+#seller tests
+class CreateListingTest(TestCase):
+    def setUp(self):
+        # Create a test user
+        self.user = User.objects.create_user(username='testuser', password='testpassword', role='S', email="test@test.com", is_approved=True)
+        # Create a merchandise item associated with the test user
+        self.item = merchandise.objects.create(title='Test', description='This is a test item', cost=9.99, quantity_in_stock=10, poster=self.user, is_approved=True)
 
 
+    def test_create_listing_view(self):
+        self.client.login(username='testuser', password='testpassword')
+        image = SimpleUploadedFile("test_image.jpg", b"file_content", content_type="image/jpeg") # Create a test image file for the form
+        # Create a merchandise item data for the form
+        form_data = {
+            'title': 'Test Item',
+            'description': 'This is a test item',
+            'cost': 9.99,
+            'quantity_in_stock': 10,
+        }
+        # Make a POST request to the create_listing view with the form data and image file
+        response = self.client.post(reverse('create-listing'), data=form_data, files={'image': image})
 
+        self.assertTrue(merchandise.objects.filter(title='Test Item').exists()) # Check that the merchandise item was created in the database
+        self.assertRedirects(response, reverse('home'))# Check that the response redirects to the home view
+
+    def test_view_my_merchandise_with_authenticated_user(self):
+        # Log in the test user
+        self.client.login(username='testuser', password='testpassword')
+        # Query the merchandise objects associated with the test user from the database
+        my_merchandise = merchandise.objects.filter(poster=self.user)
+        # Get the URL for the view_my_merchandise function
+        url = reverse('view-my-listings')
+        # Send GET request to the view_my_merchandise function
+        response = self.client.get(url)
+        # Assert that the response has a status code of 200 (OK)
+        self.assertEqual(response.status_code, 200)
+        # Check if 'listings' exists in the response context
+        self.assertIn('listings', response.context)
+        # Assert that the rendered 'listings' context contains the expected item
+        self.assertIn(self.item, my_merchandise)
+        # Assert that the response uses the 'view_my_listings.html' template
+        self.assertTemplateUsed(response, 'view_my_listings.html')
+
+
+    def test_view_my_merchandise_with_unauthenticated_user(self):
+        # Log out the test user
+        self.client.logout()
+        # Get the URL for the view_my_merchandise function
+        url = reverse('view-my-listings')
+        # Send GET request to the view_my_merchandise function
+        response = self.client.get(url)
+        # Assert that the response has a status code of 302 (Redirect)
+        self.assertEqual(response.status_code, 302)
