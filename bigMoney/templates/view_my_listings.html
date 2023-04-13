@@ -13,6 +13,12 @@
                 <li>Quantity in stock: {{ listing.quantity_in_stock }}</li>
                 <li>Quantity sold: {{ listing.quantity_sold }}</li>
                 <li>Date posted: {{ listing.date_posted }}</li>
+                {% if listing.is_approved == NONE %}
+                  <li>Admin Approved : Not Yet</li>
+                {% else %}
+                  <li>Admin Approved : {{listing.is_approved}}</li>
+                {% endif %}
+                
             </ul>
         </div>
       </a>

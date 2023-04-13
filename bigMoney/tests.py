@@ -1,9 +1,13 @@
 from django.test import Client, TestCase
 from django.urls import reverse
-from .models import User
+from .models import User, Order, merchandise
 from .forms import *
+<<<<<<< HEAD
 from django.core.files.uploadedfile import SimpleUploadedFile
 from .models import merchandise
+=======
+from .views import *
+>>>>>>> 9dffbbc105e6fc5595b747406dfe35d6daf7cca6
 
 # Create your tests here.
 
@@ -61,19 +65,151 @@ class LoginTestCase(TestCase):
         self.client = Client()
         self.user = User.objects.create_user(
             username='testuser', email='testuser@example.com', password='testpassword')
-
+    #succesful login test
     def test_login_success(self):
         url = reverse('login')
         data = {'username': 'testuser', 'password': 'testpassword'}
         response = self.client.post(url, data)
         self.assertRedirects(response, reverse('home'), status_code=302)
-
+    #unsuccessful login test
     def test_login_failure(self):
         url = reverse('login')
         data = {'username': 'testuser', 'password': 'wrongpassword'}
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Please enter a correct username and password.')
+    
+    def test_logout_success(self):
+        # Login first
+        self.client.login(username='testuser', password='testpassword')
+
+        # Logout
+        response = self.client.get(reverse('logout'))
+
+        # Check that the user is logged out
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, reverse('home'), status_code=302)
+        
+class AdminLoginTest(TestCase):
+    def setUp(self):
+        # create admin
+        self.admin = User.objects.create_superuser(
+        username='admin', email='admin@example.com', password='something')
+
+    def test_admin_login(self):
+        # go to admin login view
+        url = reverse('admin:login')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+
+        # login as admin
+        response = self.client.post(
+            url,
+            {
+                'username': 'admin',
+                'password': 'something'
+            }
+        )
+        self.assertEqual(response.status_code, 302)
+        response = self.client.get(url)
+        self.assertRedirects(response, reverse('admin:index'), status_code=302)
+
+class AdminApproveUser(TestCase):
+    def setUp(self):
+        # create admin
+        self.admin = User.objects.create_superuser(
+            username='admin', email='admin@example.com', password='something')
+        # create user
+        self.user = User.objects.create_user(
+            username='testuser', email='testuser@example.com', password='testpass')
+        self.user.is_approved = None
+        self.user.save()
+    
+    def test_admin_approve_user(self):
+        # login as admin
+        self.client.force_login(self.admin)
+        
+        # check user is not approved
+        self.assertFalse(User.objects.get(id=self.user.id).is_approved)
+
+        # set is_approved to true
+        self.user.is_approved = True
+        self.user.save()
+
+        self.assertTrue(User.objects.get(id=self.user.id).is_approved)
+        # another way of checking
+        #self.user.refresh_from_db()
+        #self.assertTrue(self.user.is_approved)
+
+class AdminDisapproveUser(TestCase):
+    def setUp(self):
+        self.admin = User.objects.create_superuser(
+            username='admin', email='admin@example.com', password='something')
+        self.user = User.objects.create_user(
+            username='testuser', email='testuser@example.com', password='testpass',
+            is_approved = True)
+
+    def test_admin_disapprove_user(self):
+        # login as admin
+        self.client.force_login(self.admin)
+        
+        # check user is approved
+        self.assertTrue(User.objects.get(id=self.user.id).is_approved)
+
+        # set is_approved to true
+        self.user.is_approved = False
+        self.user.save()
+
+        self.assertFalse(User.objects.get(id=self.user.id).is_approved)
+
+class AdminApproveMerch(TestCase):
+    def setUp(self):
+        # create admin
+        self.admin = User.objects.create_superuser(
+            username='admin', email='admin@example.com', password='something')
+        # create merchandise
+        self.merch = merchandise.objects.create(
+            title = 'TestMerch',
+            cost = 10.00,
+            description = 'Some description',
+            quantity_in_stock = 3,
+            quantity_sold = 1,
+            is_approved = None,
+        )
+    
+    def test_approve_merch(self):
+        # login as admin
+        self.client.force_login(self.admin)
+
+        # check merch exists
+        self.assertTrue(merchandise.objects.get(id=self.merch.id).title == 'TestMerch')
+
+        # check merch is not approved
+        self.assertFalse(merchandise.objects.get(id=self.merch.id).is_approved)
+        
+        # set merch.is_approved to True and save
+        self.merch.is_approved = True
+        self.merch.save()
+
+        # Check if the update was successful
+        self.merch.refresh_from_db()
+        self.assertEqual(self.merch.is_approved, True)
+
+class AdminViewOrderHistory(TestCase):
+    def setUp(self):
+        # create admin
+        self.admin = User.objects.create_superuser(
+        username='admin', email='admin@example.com', password='something')
+
+    def test_view_order_history(self):
+        # login as admin
+        self.client.force_login(self.admin)
+
+        #look at order history
+        url = reverse('admin:bigMoney_order_changelist')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+
 
 #seller tests
 class CreateListingTest(TestCase):
@@ -102,5 +238,3 @@ class CreateListingTest(TestCase):
 
         self.assertTrue(merchandise.objects.filter(title='Test Item').exists()) # Check that the merchandise item was created in the database
         self.assertRedirects(response, reverse('home'))# Check that the response redirects to the home view
-
-    
