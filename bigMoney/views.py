@@ -167,3 +167,12 @@ def add_to_cart(request, item_id):
     
     messages.success(request, f"a {item.title} has been added to your cart!")
     return redirect('view-product', item_id=item_id)
+
+def search(request):
+    query = request.GET.get('query')
+    results = merchandise.objects.filter(title__icontains=query)
+    context = {
+        'query': query,
+        'results': results,
+    }
+    return render(request, 'search_results.html', context)

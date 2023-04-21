@@ -17,6 +17,7 @@ urlpatterns = [
  path('view-product/<int:item_id>/', views.view_merchandise, name="view-product"),
  path('redeem-funds/', views.redeem_funds, name="redeem_funds"),
  path('add_to_cart/<int:item_id>/', views.add_to_cart, name="add_to_cart"),
+ path('search/', views.search, name='search')
 ]
 
 # allows for images to be uploaded
