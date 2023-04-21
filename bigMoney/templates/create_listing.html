@@ -35,6 +35,16 @@
   </div>
 
   <div class="input-block">
+    <label for="genre"></label>
+    <p class="input_descriptor">Item Category</p>
+    <select class="get_input" id="genre" name="genre" required>
+      {% for choice in form.genre.field.choices %}
+        <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+      {% endfor %}
+    </select>
+  </div>  
+
+  <div class="input-block">
     <label for="image"></label>
     <p class="input_descriptor">Item Picture</p>
     <input class="get_input" id="image" type="file" accept="image/*" name="image" required>

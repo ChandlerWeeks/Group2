@@ -16,6 +16,7 @@ class UserAdmin(admin.ModelAdmin):
 
 @admin.register(merchandise)
 class MerchandiseAdmin(admin.ModelAdmin):
+    list_display = ['title','is_approved' ,'cost']
     fields = ['title', "is_approved", 'cost','description','date_posted',
     'image', 'quantity_in_stock']
     ordering = ('-date_posted',)
