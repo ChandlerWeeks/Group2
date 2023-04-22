@@ -64,10 +64,8 @@
     font-size: 26px;
     font-weight: bold;
     text-align: center;
-    margin: 12px 0;
+    margin: 10px 0;
 }
-
-
 
 .form {
     width: 95%;
@@ -239,6 +237,47 @@ div.container {
     background-color: #555;
     color: white;
 }
+
+.item-block {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+}
+
+.items-condensed li {
+    vertical-align: top;
+  }
+
+.similar-items {
+    border: 1px solid black;
+    height: auto;
+    padding: 5px;
+    margin: 5px;
+    clear: both;
+  }
+
+  .items-condensed {
+    width: 40%;
+    height: 200px; /* Set a fixed height */
+    border: 1px solid black;
+    display: inline-block;
+    margin: 5px;
+    overflow: hidden; /* Hide any content that may exceed the fixed height */
+  }
+
+  .items-condensed li {
+    text-align: center;
+    text-decoration: none;
+    color: black;
+    list-style-type: none;
+  }
+
+  .items-condensed img {
+    width: 50%;
+    height: auto;
+    margin: 5px;
+  }
 
 .merchandise-items {
     border: 1px solid;
