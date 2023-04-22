@@ -34,4 +34,26 @@
         </div>
     </div>
 </div>
+<!--div for the related items-->
+<div class="similar-items">
+    <h2 class="subscript">Compare To Simliar Items In Category: {{item.genre}}</h2>
+    {% if related_items %}
+    <div class="item-block">
+        <ul>
+        {% for related_item in related_items %}
+        <a href="{% url 'view-product' related_item.id %}">
+            <div class="items-condensed">
+                <li><img src="{{ related_item.image.url }}" alt="{{ related_item.name }} image"></li>
+                <li>{{ related_item.title }}</li>
+                <li>Sold by: {{ related_item.poster.username }}</li>
+                <li>Price: ${{related_item.cost}}</li>
+            </div>
+        </a>
+        {% endfor %}
+        </ul>
+    </div>
+</div>
+{%else%}
+<p>No similar items</p>
+{%endif%}
 {% endblock %}

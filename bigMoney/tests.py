@@ -223,6 +223,7 @@ class CreateListingTest(TestCase):
             'description': 'This is a test item',
             'cost': 9.99,
             'quantity_in_stock': 10,
+            'genre': "outdoors"
         }
         # Make a POST request to the create_listing view with the form data and image file
         response = self.client.post(reverse('create-listing'), data=form_data, files={'image': image})

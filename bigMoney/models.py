@@ -36,6 +36,18 @@ class merchandise(models.Model):
 
     is_approved = models.BooleanField(default=None, null=True)
 
+    GENRE_CHOICES = (
+        ('clothing', 'Clothing'),
+        ('books', 'Books'),
+        ('movies', 'Movies'),
+        ('computers', 'Computers'),
+        ('food', 'Food'),
+        ('cooking', 'Cooking'),
+        ('outdoors', 'Outdoors'),
+    )
+
+    genre = models.CharField(max_length=255, choices=GENRE_CHOICES, null=True)
+
     def __str__(self):
         return f'{self.title} - {self.poster}'
 

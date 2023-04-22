@@ -26,7 +26,7 @@ class merchandiseForm(forms.ModelForm):
     class Meta:
         model = merchandise
         fields = ['title', 'cost', 'description', 'image', 
-                  'quantity_in_stock']
+                  'quantity_in_stock', 'genre']
         
 class CartItemForm(forms.ModelForm):
     class Meta:

@@ -123,10 +123,11 @@ def create_listing(request):
 
 def view_merchandise(request, item_id):
     item = get_object_or_404(merchandise, pk=item_id)
+    related_items = merchandise.objects.filter(genre=item.genre).exclude(pk=item_id)[:2]
 
     messages.get_messages(request) # retrieve any messages
 
-    return render(request, 'view_item.html', {'item': item})
+    return render(request, 'view_item.html', {'item': item, 'related_items': related_items})
 
 @login_required
 def view_my_merchandise(request):
