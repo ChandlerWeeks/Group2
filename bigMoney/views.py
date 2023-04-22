@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.urls import reverse
 from .forms import *
 from .models import *
+from decimal import Decimal
 
 # Create your views here.
 def home(request):
@@ -152,22 +153,77 @@ def redeem_funds(request):
     message = "Funds Recieved Successfully"
     return redirect(reverse('view-my-sales') + '?message=' + message)
 
-@login_required
 def add_to_cart(request, item_id):
     item = get_object_or_404(merchandise, pk=item_id)
-    cart = shoppingCart.objects.get_or_create(customer=request.user)
+    cart, created = shoppingCart.objects.get_or_create(customer=request.user)
 
     cart_item, created = CartItem.objects.get_or_create(item=item, customer=request.user)
 
     if not created:
         cart_item.quantity += 1
-        cart_item.save()
     else:
         cart_item.quantity = 1
-        cart.items.add(cart_item)
-    
-    messages.success(request, f"a {item.title} has been added to your cart!")
+
+    cart_item.save()
+    cart.items.add(cart_item)
+
+    messages.success(request, f'a {item.title} has been added to your cart!')
     return redirect('view-product', item_id=item_id)
+
+@login_required
+def view_cart(request):
+    user = request.user
+    cart = shoppingCart.objects.get(customer=user)
+    items = cart.items.all()
+    total_cost = 0
+
+    for cart_item in items:
+        total_cost += cart_item.item.cost * cart_item.quantity
+
+    context = {'items': items, 'total_cost': total_cost}
+    return render(request, "view_cart.html", context)
+
+@login_required
+def checkout(request):
+    if request.method == 'POST':
+        cart = shoppingCart.objects.get(customer=request.user)
+        #total_cost = Decimal(str('0.0'))
+        total_cost = 0
+
+        # Calculate total cost of items in the cart
+        for cart_item in cart.items.all():
+            total_cost += cart_item.item.cost * cart_item.quantity
+
+        # Check if the user has enough balance to pay for the items
+        if request.user.balance < total_cost:
+            messages.error(request, 'Insufficient balance to complete the purchase.')
+            return redirect('view-cart')
+
+        print("TYPE", type(request.user.balance))
+
+        # Update user's balance
+        # unsupported operand type(s) for -=: 'float' and 'decimal.Decimal'
+        #request.user.balance -= total_cost
+        #request.user.save()
+
+        # Update item quantity_in_stock and quantity_sold
+        for cart_item in cart.items.all():
+            item = cart_item.item
+            item.quantity_in_stock -= cart_item.quantity
+            item.quantity_sold += cart_item.quantity
+            item.save()
+
+        # Create the order
+        order = Order.objects.create(Order=cart)
+        order.save()
+        messages.success(request, 'Order successfully placed!')
+
+        # Clear the shopping cart
+        for cart_item in cart.items.all():
+            cart_item.delete()
+
+        # Redirect to a success page or the home page
+        return redirect('view-cart')
 
 def search(request):
     query = request.GET.get('query')
