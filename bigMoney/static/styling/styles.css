@@ -238,13 +238,6 @@ div.container {
     color: white;
 }
 
-.item-block {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-
-}
-
 .items-condensed li {
     vertical-align: top;
   }
@@ -263,6 +256,7 @@ div.container {
     border: 1px solid black;
     display: inline-block;
     margin: 5px;
+    margin-left: 40px;
     overflow: hidden; /* Hide any content that may exceed the fixed height */
   }
 
@@ -274,7 +268,7 @@ div.container {
   }
 
   .items-condensed img {
-    width: 50%;
+    width: 30%;
     height: auto;
     margin: 5px;
   }

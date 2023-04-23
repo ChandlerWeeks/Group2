@@ -63,7 +63,8 @@ class shoppingCart(models.Model):
 
 class Order(models.Model):
     date_ordered = models.DateTimeField(default=timezone.now)
-    Order = models.ForeignKey(shoppingCart, on_delete=models.SET_NULL, null=True)
+    customer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
+    items = models.ManyToManyField(CartItem)
 
 class User(AbstractUser):
     USER_ROLES = (
