@@ -11,6 +11,15 @@
     float: left;
 }
 
+body {
+    margin: 0px;
+}
+
+main {
+    margin-left: 4px;
+    margin-right: 4px;
+}
+
 .search-li {
     float: right;
     width: auto;
@@ -43,11 +52,22 @@
     border: none;
     border-bottom: 1px solid gray;
     border-radius: 8px;
+
+    box-shadow: 2px 2px 7px #333;
+}
+
+
+.search-input:hover {
+    box-shadow: 3px 3px 10px #000;
 }
 
 .nav-bar a:hover {
     background-color: #555;
     color: white;
+}
+
+.navbar a:active {
+    opacity: 85%;
 }
 
 .page-title {
@@ -89,10 +109,16 @@
     border-radius: 5px;
     cursor: pointer;
     margin-top: 10px;
+
+    box-shadow: 2px 2px 7px #000;
 }
   
 .btn:hover {
     background-color: #555;
+}
+
+.btn:active {
+    opacity: 50%;
 }
 
 .input_descriptor {
@@ -133,6 +159,12 @@ div.gallery3 {
     float:left;
     width: 30%;
     background-color: #b9cfad;
+    box-shadow: 2px 2px 7px #333;
+}
+
+div.gallery3:hover {
+    box-shadow: 3px 3px 12px #000;
+    opacity: 90%;
 }
 
 div.gallery2 {
@@ -202,6 +234,8 @@ div.container {
     border: 1px solid;
     border-color: #777;
     height: 450px;
+
+    box-shadow: 2px 2px 7px #333;
 }
 
 .details-container p {
@@ -230,12 +264,18 @@ div.container {
     color: black;
     text-decoration: none;
     overflow: hidden;
-    width: 40%
+    width: 40%;
+
+    box-shadow: 2px 2px 7px #333;
 }
 
 .add-to-button:hover {
     background-color: #555;
     color: white;
+}
+
+.add-to-button:active {
+    opacity: 50%;
 }
 
 .items-condensed li {
@@ -258,6 +298,14 @@ div.container {
     margin: 5px;
     margin-left: 40px;
     overflow: hidden; /* Hide any content that may exceed the fixed height */
+
+    box-shadow: 2px 2px 7px #333;
+  }
+
+  .items-condensed:hover {
+    background-color: #ccc;
+    box-shadow: 3px 3px 10px #000;
+
   }
 
   .items-condensed li {
@@ -280,10 +328,19 @@ div.container {
     margin-right: 20px;
     display: flex;
     align-items: center;
+
+    box-shadow: 2px 2px 7px #333;
+    transition: box-shadow 0.05s;
 }
 
 .merchandise-items:hover {
-    background-color: #e6e6e6
+    background-color: #e6e6e6;
+    cursor: pointer;
+    box-shadow: 3px 3px 12px #000;
+}
+
+.merchandise-items:active {
+    opacity: 50%;
 }
 
 .merchandise-items img {
