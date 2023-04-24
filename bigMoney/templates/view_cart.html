@@ -10,34 +10,27 @@
         {% endfor %}
     </ul>
 {% endif %}
-<div class="container">
-    <h1>Your Shopping Cart</h1>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Item</th>
-                <th>Quantity</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for item in items %}
-            <tr>
-                <td>{{ item.item.title }}</td>
-                <td>{{ item.quantity }}</td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="2">Your cart is empty.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+
+<div>
+    <h1 class="page-title">Your Shopping Cart</h1>
+    {% for item in items %}
+    <a href="{% url 'view-product' item_id=item.item.id %}" style="text-decoration: none">
+        <div class="merchandise-items">
+            <img src="{{ item.item.image.url }}" alt="{{ listing.name }} image">
+            <ul>
+                <li><h2>{{ item.item.title }}</h2></li>
+                <li>Cost: ${{ item.item.cost }}</li>
+                <li>Quantity: {{ item.quantity }}</li>
+            </ul>
+        </div>
+    </a>
+    {% endfor %}
+    <div class="total-cost">
+        <h3>Total cost: ${{ total_cost }}</h3>
+      </div>
     <form method="POST" action="{% url 'checkout' %}">
       {% csrf_token %}
       <button type="submit" class="btn btn-primary" id="checkout-btn">Checkout</button>
   </form>  
-</div>
-<div class="total-cost">
-  <h3>Total cost: ${{ total_cost }}</h3>
 </div>
 {% endblock %}

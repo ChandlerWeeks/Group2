@@ -173,8 +173,11 @@ def add_to_cart(request, item_id):
 @login_required
 def view_cart(request):
     user = request.user
-    cart = shoppingCart.objects.get(customer=user)
-    items = cart.items.all()
+    cart = shoppingCart.objects.get_or_create(customer=request.user)
+    if cart[0].items != None:
+        items = cart[0].items.all()
+    else:
+        items = None
     total_cost = 0
 
     for cart_item in items:
@@ -190,13 +193,17 @@ def checkout(request):
         #total_cost = Decimal(str('0.0'))
         total_cost = 0
 
+        if cart.items.count() == 0:
+            messages.error(request, 'Please add an item to the cart')
+            return redirect('view-cart')
+
         # Calculate total cost of items in the cart
         for cart_item in cart.items.all():
             total_cost += cart_item.item.cost * cart_item.quantity
 
         # Check if the user has enough balance to pay for the items
-        if request.user.balance < total_cost:
-            messages.error(request, 'Insufficient balance to complete the purchase.')
+        if request.user.card_number == None:
+            messages.error(request, 'Please add a card before making a purchase')
             return redirect('view-cart')
 
         print("TYPE", type(request.user.balance))
@@ -214,13 +221,14 @@ def checkout(request):
             item.save()
 
         # Create the order
-        order = Order.objects.create(Order=cart)
+        order = Order.objects.create(customer=request.user)
+        for item in cart.items.all():
+            order.items.add(item)
         order.save()
         messages.success(request, 'Order successfully placed!')
 
         # Clear the shopping cart
-        for cart_item in cart.items.all():
-            cart_item.delete()
+        cart.items.clear()
 
         # Redirect to a success page or the home page
         return redirect('view-cart')

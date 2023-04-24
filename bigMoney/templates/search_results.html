@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Search Results</h1>
-    <p>Showing results for: {{ query }}</p>
+<h1 class="page-title">Search Results</h1>
+    <p class="subscript">Showing results for: {{ query }}</p>
 
     {% if results %}
         {% for item in results %}
