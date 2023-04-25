@@ -158,7 +158,7 @@ div.gallery3 {
     border: 1px solid #777;
     float:left;
     width: 30%;
-    background-color: #b9cfad;
+    background-color: #aace95;
     box-shadow: 2px 2px 7px #333;
 }
 
@@ -172,7 +172,13 @@ div.gallery2 {
     border: 1px solid #777;
     float:left;
     width: 45%;
-    background-color: #b9cfad;
+    background-color: #aace95;
+    box-shadow: 2px 2px 7px #333;
+}
+
+div.gallery2:hover {
+    box-shadow: 3px 3px 12px #000;
+    opacity: 90%;
 }
 
 div.gallery:hover {

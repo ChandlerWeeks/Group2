@@ -66,6 +66,9 @@ class Order(models.Model):
     customer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
     items = models.ManyToManyField(CartItem)
 
+    def __str__(self):
+        return f'Order made by {self.customer.username}'
+
 class User(AbstractUser):
     USER_ROLES = (
         ("S", "Seller"),

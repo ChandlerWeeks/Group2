@@ -34,19 +34,26 @@
   {% endif %}
 
   {% if show_customer_boxes %}
-  <div class="container"></div>
-    <div class="gallery2"> 
-      <a href="{% url 'view-my-sales' %}">
-        <img src="{% static '/images/sales-pic.png'%}", alt="view sales picture" width="400" height="400">
+  <div class="container">
+    <div class="gallery3"> 
+      <a href="{% url 'view-cart' %}">
+        <img src="{% static '/images/Shopping-Cart.png'%}", alt="view cart picture" width="400" height="400">
       </a>
-      <div class="desc">Sign up</div>
+      <div class="desc">View Your Cart</div>
     </div>
 
-    <div class="gallery2"> 
-      <a href="{% url 'view-my-sales' %}">
-        <img src="{% static '/images/sales-pic.png'%}", alt="view sales picture" width="400" height="400">
+    <div class="gallery3"> 
+      <a href="{% url 'view-orders' %}">
+        <img src="{% static '/images/orders.png'%}", alt="view orders picture" width="400" height="400">
       </a>
-      <div class="desc">Login</div>
+      <div class="desc">View Your Orders</div>
+    </div>
+
+    <div class="gallery3"> 
+      <a href="{% url 'view-account' %}">
+        <img src="{% static '/images/pfp.png'%}", alt="view account picture" width="820" height="200">
+      </a>
+      <div class="desc">View Account</div>
     </div>
   </div>
   {% endif %}
