@@ -263,15 +263,34 @@ def search(request):
 
 @login_required
 def view_orders(request):
+    messages.get_messages(request) # retrieve any messages
     user = request.user
     orders = user.Orders.all()
     context = {"orders": orders}
     return render(request, "view_orders.html", context)
 
 @login_required
-def view_order(request, order_ID):
-    return render(request)
+def view_order(request, order_id):
+    order = get_object_or_404(Order, pk=order_id)
+
+    # calculate the total cost of the order
+    total_cost = 0
+    for item in order.items.all():
+            total_cost += item.item.cost * item.quantity
+
+    context = {"order": order, "cost": total_cost}
+
+    return render(request, 'view_order.html', context)
 
 @login_required
-def return_order(request, order_ID):
-    return render(request)
+def return_order(request, order_id):
+    order = get_object_or_404(Order, pk=order_id)
+
+    for cartItem in order.items.all():
+        cartItem.item.poster.balance -= float(cartItem.item.cost * cartItem.quantity)
+        cartItem.item.poster.save()
+
+    order.delete()
+
+    messages.success(request, "Successfully Returned Order!")
+    return redirect('view-orders')

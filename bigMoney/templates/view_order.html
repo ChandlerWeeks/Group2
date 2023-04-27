@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2 class="page-title">Viewing Order</h2>
+
+    <div class="order">
+        <p>{{order}}</p>
+        <p>Date Purchased: {{order.date_ordered|date:"F j, Y" }}</p>
+
+        <h3 class="subscript">Contents</h3>
+        {% for item in order.items.all %}
+        <div style="display: flex; align-items: center;"class="order-item">
+            <img src="{{ item.item.image.url }}" alt="{{ item.item.name }} - image not loaded" class="order-img">
+            
+            <div class="order-item-contents">
+                <p>{{item.item.title}}</p>
+                <p>Quantity: {{item.quantity}}</p>
+                <p>Cost: ${{item.item.cost}}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div>
+        <p>Final cost: ${{cost}}</p>
+        <a href="{% url 'return-order' order_id=order.id %}"class="scary-btn">RETURN ORDER</a>
+    </div>
+{% endblock %}

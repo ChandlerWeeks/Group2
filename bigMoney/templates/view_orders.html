@@ -2,6 +2,11 @@
 
 {% block content %}
 
+{% if messages %}
+        {%for message in messages%}
+            <div class="alert">{{message}}</div>
+        {%endfor%}
+{% endif %}
 
 <h2 class="page-title">Your Orders</h2>
 {% if orders|length == 0%}
@@ -9,10 +14,17 @@
 {% endif %}
 <!--PROVIDE MORE DETAILS, probably contents of order-->
 {% for order in orders %}
-    <a href="home">
-    <div class="order" style="border: 1px solid #000">
+    <a href="{% url 'view-order' order_id=order.id %}" class="order-tab" style="text-decoration: none">
+    <div class="order-broad" style="border: 1px solid #000">
         <p>{{order}}</p>
-        <p>Date Purchased: {{order.date_ordered|date:"F j, Y" }}</p>
+        <p style="margin-bottom: 0px">Date Purchased: {{order.date_ordered|date:"F j, Y" }}</p>
+
+        <p style="display: inline-block; vertical-align: top;">Contents:&emsp;</p>
+        <div class="order-items">
+            {% for item in order.items.all %}
+                <p>{{item.item.title}} - quantity: {{item.quantity}} - price: {{item.item.cost}} </p>
+            {% endfor %}
+        </div>
     </div>
     </a>
 {% endfor %}
