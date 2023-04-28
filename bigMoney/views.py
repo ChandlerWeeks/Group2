@@ -205,7 +205,6 @@ def view_cart(request):
 def checkout(request):
     if request.method == 'POST':
         cart = shoppingCart.objects.get(customer=request.user)
-        #total_cost = Decimal(str('0.0'))
         total_cost = 0
 
         if cart.items.count() == 0:
@@ -222,11 +221,6 @@ def checkout(request):
             return redirect('view-cart')
 
         print("TYPE", type(request.user.balance))
-
-        # Update user's balance
-        # unsupported operand type(s) for -=: 'float' and 'decimal.Decimal'
-        #request.user.balance -= total_cost
-        #request.user.save()
 
         # Update item quantity_in_stock and quantity_sold
         for cart_item in cart.items.all():
