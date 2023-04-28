@@ -1,6 +1,8 @@
 from django.test import Client, TestCase
 from django.urls import reverse
 from .models import User, Order, merchandise
+from bigMoney.models import CartItem
+from bigMoney.models import shoppingCart as ShoppingCart
 from .forms import *
 from django.core.files.uploadedfile import SimpleUploadedFile
 from .models import merchandise
@@ -283,3 +285,135 @@ class CreateListingTest(TestCase):
 
         # Assert that the response has a 302 status code, indicating a redirect to the login page
         self.assertEqual(response.status_code, 302)
+
+# cart tests
+class CartTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='testuser', password='testpassword', role='C', email="test@test.com", is_approved=True)
+        self.item = merchandise.objects.create(title='Test', description='This is a test item', cost=9.99, 
+        quantity_in_stock=10, poster=self.user, is_approved=True)
+        self.cart = ShoppingCart.objects.create(customer=self.user)
+        self.cartItem = CartItem.objects.create(item = self.item, customer = self.user, quantity = 1)
+        self.client = Client()
+
+    def test_add_to_cart(self):
+        # Log in the test user
+        self.client.login(username='testuser', password='testpassword')
+
+        # Add our item to the cart
+        self.cart.items.add(self.cartItem)
+        self.cart.save()
+
+        # Assert that the CartItem object is in the shoppingCart's items
+        self.assertIn(self.cartItem, self.cart.items.all())
+
+    def test_view_cart(self):
+        # Log in the test user
+        self.client.login(username='testuser', password='testpassword')
+
+        # Send a request to the view-cart URL
+        response = self.client.get(reverse('view-cart'))
+
+        # Check if the response status code is 200 (OK)
+        self.assertEqual(response.status_code, 200)
+
+    def test_checkout(self):
+        # Log in the test user
+        self.client.login(username='testuser', password='testpassword')
+
+        # Add our item to the cart
+        self.cart.items.add(self.cartItem)
+        self.cart.save()
+
+        # Send a request to the checkout URL
+        response = self.client.post(reverse('checkout'))
+
+        # Check if the response status code is 302
+        self.assertEqual(response.status_code, 302)
+
+        # Create the order (modified code from checkout view)
+        order = Order.objects.create(customer=self.user)
+        for item in self.cart.items.all():
+            order.items.add(item)
+        order.customer = self.user
+        self.user.Orders.add(order)
+        order.save()
+
+        # Empty cart (code from checkout view)
+        self.cart.items.clear()
+
+        # Check if the cart is empty after the checkout
+        self.assertEqual(self.cart.items.count(), 0)
+
+        # Check if the created Order has the correct information
+        self.assertIsNotNone(order)
+        self.assertEqual(order.items.count(), 1)
+        self.assertIn(self.cartItem, order.items.all())
+
+class BuyerTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='testuser', password='testpassword', role='C', email="test@test.com", 
+        is_approved=True)
+
+    def test_edit_account_details(self):
+        # Log in the test user
+        self.client.login(username='testuser', password='testpassword')
+    
+        # Send a request to the edit-account URL
+        response = self.client.post(reverse('edit-account'))
+
+        # Check if the response status code is 200
+        self.assertEqual(response.status_code, 200)
+
+        # Define form data
+        form_data = {
+            'name': 'John Doe',
+            'email': 'email@example.com',
+            'card_number': '1234567890123456',
+        }
+
+        # Send a POST request to the edit_account URL with the form data
+        response = self.client.post(reverse('edit-account'), form_data)
+
+        # Check if the response status code is 302 (redirect)
+        self.assertEqual(response.status_code, 302)
+
+        # Refresh the user instance from the database
+        self.user.refresh_from_db()
+
+        # Check if the user's information has been updated correctly
+        self.assertEqual(self.user.name, form_data['name'])
+        self.assertEqual(self.user.email, form_data['email'])
+        self.assertEqual(self.user.card_number, form_data['card_number'])
+
+    def test_change_address(self):
+        # Log in the test user
+        self.client.login(username='testuser', password='testpassword')
+
+        # Send a request to the change_address URL
+        response = self.client.post(reverse('change-address'))
+
+        # Check if the response status code is 200
+        self.assertEqual(response.status_code, 200)
+
+        # Define the form data
+        form_data = {
+            'RecipiantName': 'Jane Doe',
+            'StreetAddress': '100 Dawg Rd',
+            'City': 'Starkville',
+            'State': 'MS',
+            'zipcode': '39759',
+        }
+
+        # Send a POST request to the change_address URL with the form data
+        response = self.client.post(reverse('change-address'), form_data)
+
+        # Refresh the user instance from the database
+        self.user.refresh_from_db()
+
+        # Check if the user's address has been updated correctly
+        self.assertEqual(self.user.address.RecipiantName, form_data['RecipiantName'])
+        self.assertEqual(self.user.address.StreetAddress, form_data['StreetAddress'])
+        self.assertEqual(self.user.address.City, form_data['City'])
+        self.assertEqual(self.user.address.State, form_data['State'])
+        self.assertEqual(str(self.user.address.zipcode), form_data['zipcode'])
